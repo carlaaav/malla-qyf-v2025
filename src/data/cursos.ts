@@ -102,7 +102,7 @@ export interface Curso {
   { id: "60", nombre: "Farmacia Clínica", semestre: 10, creditos: 5, requisitos: ["54"] },
   { id: "61", nombre: "Práctica Profesional en Farmacia", semestre: 10, creditos: 7, requisitos: ["52", "54", "56"] },
   { id: "62", nombre: "Biotecnolopia Farmacéutica", semestre: 10, creditos: 4, requisitos: ["38","51"] },
-  { id: "63", nombre: "Economia y Marketing Farmacéutico", semestre: 9, creditos: 3, requisitos: ["44","52","54"] },
+  { id: "63", nombre: "Economia y Marketing Farmacéutico", semestre: 10, creditos: 3, requisitos: ["44","52","54"] },
   { id: "64", nombre: "Innovación y Proyectos", semestre: 10, creditos: 3, requisitos: ["53"] },
   { id: "65", nombre: "Electivos Especializados", semestre: 10, creditos: 8, requisitos: [] },
 
