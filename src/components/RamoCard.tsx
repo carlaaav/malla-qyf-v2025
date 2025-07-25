@@ -14,43 +14,61 @@ interface Props {
 }
 
 export function RamoCard({ curso, estado, onToggle }: Props) {
-  // Estilos con tu paleta de colores (rosa/morado)
+  // Estilos con mejor accesibilidad
   const estilos = {
-    aprobado: 'bg-[#b38ce7] border-[#9a6fd1] text-white',
-    disponible: 'bg-pink-100 border-pink-300 text-pink-800 hover:bg-pink-200 cursor-pointer',
-    bloqueado: 'bg-gray-100 border-gray-300 text-gray-400'
+    aprobado: 'bg-purple-600 border-purple-700 text-white',
+    disponible: 'bg-pink-100 border-pink-300 text-pink-800 hover:bg-pink-200 cursor-pointer transition-colors',
+    bloqueado: 'bg-gray-100 border-gray-300 text-gray-500'
   };
 
-  // Iconos para cada estado
+  // Iconos accesibles con labels ARIA
   const iconos = {
-    aprobado: '✓',
-    disponible: '→',
-    bloqueado: '🔒'
+    aprobado: { symbol: '✓', label: 'Aprobado' },
+    disponible: { symbol: '→', label: 'Disponible' },
+    bloqueado: { symbol: '🔒', label: 'Bloqueado' }
+  };
+
+  const handleClick = () => {
+    if (estado === 'disponible') {
+      onToggle();
+    }
   };
 
   return (
     <div
-      className={`relative p-3 mb-2 rounded-lg border transition-all duration-200 ${estilos[estado]} group`}
-      onClick={estado === 'disponible' ? onToggle : undefined}
+      className={`relative p-3 mb-2 rounded-lg border ${estilos[estado]} group`}
+      onClick={handleClick}
+      role="button"
+      aria-label={`${curso.nombre} - ${iconos[estado].label}`}
+      aria-disabled={estado !== 'disponible'}
+      tabIndex={estado === 'disponible' ? 0 : -1}
     >
-      {/* Indicador de estado */}
-      <div className={`absolute -top-2 -right-2 w-5 h-5 rounded-full flex items-center justify-center text-xs 
-        ${estado === 'aprobado' ? 'bg-purple-600' : estado === 'disponible' ? 'bg-pink-400' : 'bg-gray-400'} text-white`}>
-        {iconos[estado]}
+      {/* Indicador de estado con mejor accesibilidad */}
+      <div 
+        className={`absolute -top-2 -right-2 w-5 h-5 rounded-full flex items-center justify-center text-xs ${
+          estado === 'aprobado' ? 'bg-purple-800' : 
+          estado === 'disponible' ? 'bg-pink-500' : 'bg-gray-500'
+        } text-white`}
+        aria-hidden="true"
+      >
+        {iconos[estado].symbol}
       </div>
 
-      {/* Nombre del ramo */}
-      <div className="font-medium text-sm">{curso.nombre}</div>
-      
-      {/* Código del curso */}
-      <div className="mt-1 text-xs font-mono opacity-80">{curso.id}</div>
+      {/* Contenido principal */}
+      <div className="pr-4"> {/* Espacio para el icono */}
+        <h3 className="font-medium text-sm mb-1">{curso.nombre}</h3>
+        <div className="text-xs font-mono opacity-80">{curso.id}</div>
+      </div>
 
-      {/* Tooltip de requisitos (solo visible si hay requisitos) */}
+      {/* Tooltip de requisitos mejorado */}
       {curso.requisitos.length > 0 && (
-        <div className="absolute z-10 invisible group-hover:visible bg-white text-gray-800 p-2 rounded shadow-lg 
-                       border border-pink-200 text-xs mt-1 w-48">
-          <p className="font-semibold text-pink-600">Requisitos:</p>
-          <ul className="list-disc pl-5">
+        <div 
+          className="absolute z-10 invisible group-hover:visible bg-white text-gray-800 p-2 rounded-lg shadow-md 
+                     border border-pink-200 text-xs mt-1 w-48 transition-opacity duration-200"
+          role="tooltip"
+        >
+          <p className="font-semibold text-pink-600 mb-1">Requisitos:</p>
+          <ul className="list-disc pl-4 space-y-1">
             {curso.requisitos.map(req => (
               <li key={req}>{req}</li>
             ))}
