@@ -12,14 +12,14 @@ export function RamoCard({ curso, completado, desbloqueado, onToggle }: Props) {
 
   const bgColor =
     estado === "completado"
-      ? "bg-green-300"
+      ? "bg-green-200 border-green-400" // Aprobado: verde
       : estado === "desbloqueado"
-      ? "bg-white hover:border-blue-400"
-      : "bg-gray-200 opacity-40";
+      ? "bg-white hover:bg-blue-50 border-blue-300" // Disponible: blanco con hover azul
+      : "bg-gray-100 opacity-60 border-gray-300"; // Bloqueado: gris
 
   return (
     <div
-      className={`p-1 border rounded-md shadow-xs text-sm transition-all cursor-pointer select-none ${bgColor}`}
+      className={`p-2 border rounded-md shadow-xs text-sm transition-all cursor-pointer select-none ${bgColor}`}
       onClick={desbloqueado ? onToggle : undefined}
       title={
         curso.requisitos.length
