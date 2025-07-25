@@ -127,7 +127,7 @@ const App = () => {
   }, [modoOscuro]);
 
   return (
-    <div
+    <div>
       className={`relative min-h-screen p-6 overflow-x-hidden overflow-y-auto transition-colors duration-500 ${
         modoOscuro ? "bg-[#e7e0f6] text-[#3c2a52]" : "bg-pink-50 text-pink-800"
       }`}
