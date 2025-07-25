@@ -2,59 +2,42 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  body {
-    @apply antialiased text-gray-800 bg-gray-50;
-    font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
-  }
-  
-  /* Mejores títulos */
-  h1, h2, h3 {
-    @apply font-bold text-purple-900;
-  }
-  
-  h1 {
-    @apply text-3xl;
-  }
-  
-  h2 {
-    @apply text-xl;
-  }
+/* Tipografía premium */
+body {
+  font-family: 'Roboto Flex', sans-serif;
+  @apply text-gray-800 antialiased;
 }
 
-@layer components {
-  /* Transiciones mejoradas para los ramos */
-  .ramo-card {
-    @apply transition-all duration-200 ease-in-out;
-  }
-  
-  .ramo-disponible {
-    @apply ramo-card hover:transform hover:-translate-y-0.5 hover:shadow-md;
-  }
-  
-  /* Barra de progreso animada */
-  .progress-bar {
-    @apply transition-all duration-700 ease-out;
-  }
-  
-  /* Botones mejorados */
-  .btn-primary {
-    @apply px-4 py-2 rounded-lg font-medium transition-colors duration-200;
-  }
-  
-  .btn-primary:focus {
-    @apply outline-none ring-2 ring-offset-2 ring-pink-500;
-  }
+h1, h2, h3, h4, .font-display {
+  font-family: 'Montserrat', sans-serif;
+  @apply font-semibold tracking-tight;
 }
 
-@layer utilities {
-  /* Utilidades personalizadas */
-  .text-balance {
-    text-wrap: balance;
-  }
-  
-  /* Scroll suave */
-  .scroll-smooth {
-    scroll-behavior: smooth;
-  }
+/* Efectos especiales */
+.ramo-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.ramo-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* Scroll personalizado */
+::-webkit-scrollbar {
+  @apply w-2 h-2;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-blue-200 rounded-full;
+}
+
+/* Animación de carga */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
 }
