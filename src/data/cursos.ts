@@ -1,115 +1,92 @@
+// data/courses.ts
 export interface Curso {
   id: string;
   nombre: string;
   semestre: number;
-  creditos: number;
   requisitos: string[];
 }
-  
-  export const cursos = [
 
-  // --- Semestre 1
-  { id: "1", nombre: "Química General I", semestre: 1, creditos: 8, requisitos: [] },
-  { id: "2", nombre: "Téc. Lab. Químico", semestre: 1, creditos: 4, requisitos: [] },
-  { id: "3", nombre: "Intro. Álgebra y Cálculo", semestre: 1, creditos: 8, requisitos: [] },
-  { id: "4", nombre: "Orientación Farmacéutica", semestre: 1, creditos: 3, requisitos: [] },
-  { id: "5", nombre: "Curso Formación General", semestre: 1, creditos: 4, requisitos: [] },
-  { id: "6", nombre: "Inglés I", semestre: 1, creditos: 3, requisitos: [] },
+export const cursos: Curso[] = [
+  // --- PRIMER AÑO ---
+  // Semestre I
+  { id: "QFAR1101", nombre: "Matemáticas I", semestre: 1, requisitos: [] },
+  { id: "QFAR1102", nombre: "Química I", semestre: 1, requisitos: [] },
+  { id: "QFAR1103", nombre: "Técnicas Básicas de Laboratorio", semestre: 1, requisitos: [] },
+  { id: "QFAR1104", nombre: "Biología Celular y Molecular", semestre: 1, requisitos: [] },
+  { id: "QFAR1105", nombre: "Introducción a las Ciencias Farmacéuticas", semestre: 1, requisitos: [] },
+  { id: "CES1144", nombre: "Salud, Bienestar y Sociedad", semestre: 1, requisitos: [] },
 
-  // --- Semestre 2
-  { id: "7", nombre: "Química General II", semestre: 2, creditos: 5, requisitos: ["1"] },
-  { id: "8", nombre: "Lab. Química General", semestre: 2, creditos: 3, requisitos: ["1", "2"] },
-  { id: "9", nombre: "Física General", semestre: 2, creditos: 5, requisitos: ["3"] },
-  { id: "10", nombre: "Cálculo Diferencial e Integral", semestre: 2, creditos: 6, requisitos: ["3"] },
-  { id: "11", nombre: "Química Transformadora", semestre: 2, creditos: 3, requisitos: [] },
-  { id: "12", nombre: "Biología Celular", semestre: 2, creditos: 5, requisitos: ["2"] },
-  { id: "13", nombre: "Inglés II", semestre: 2, creditos: 3, requisitos: ["6"] },
+  // Semestre II
+  { id: "QFAR1106", nombre: "Matemáticas II", semestre: 2, requisitos: ["QFAR1101"] },
+  { id: "QFAR1107", nombre: "Química II", semestre: 2, requisitos: ["QFAR1102", "QFAR1103"] },
+  { id: "QFAR1109", nombre: "Fisiología y Patología I", semestre: 2, requisitos: ["QFAR1104"] },
+  { id: "CES1145", nombre: "Salud Pública", semestre: 2, requisitos: ["CES1144"] },
+  { id: "ELAC", nombre: "Electivo Antropológico Cristiano", semestre: 2, requisitos: [] },
+  { id: "QFAR1110", nombre: "Anatomía e Histología", semestre: 2, requisitos: [] },
 
-  // --- Semestre 3
-  { id: "14", nombre: "Química Orgánica I", semestre: 3, creditos: 5, requisitos: ["7"] },
-  { id: "15", nombre: "Química Analítica I", semestre: 3, creditos: 5, requisitos: ["7", "8"] },
-  { id: "16", nombre: "Lab. Química Orgánica I", semestre: 3, creditos: 4, requisitos: ["7", "8"] },
-  { id: "17", nombre: "Estadística y Análisis de Datos", semestre: 3, creditos: 4, requisitos: ["10"] },
-  { id: "18", nombre: "Fundamentos de Ciencias Farmacéuticas", semestre: 3, creditos: 2, requisitos: ["4", "11"] },
-  { id: "19", nombre: "Fisiología Celular", semestre: 3, creditos: 5, requisitos: ["9", "12"] },
-  { id: "20", nombre: "Curso Formación General", semestre: 3, creditos: 2, requisitos: [] },
-  { id: "21", nombre: "Inglés III", semestre: 3, creditos: 3, requisitos: ["13"] },
+  // --- SEGUNDO AÑO ---
+  // Semestre III
+  { id: "QFAR1111", nombre: "Química Orgánica I", semestre: 3, requisitos: ["QFAR1107"] },
+  { id: "QFAR1112", nombre: "Botánica Farmacéutica", semestre: 3, requisitos: [] },
+  { id: "QFAR1108", nombre: "Biofísica", semestre: 3, requisitos: [] },
+  { id: "QFAR1113", nombre: "Fisiología y Patología II", semestre: 3, requisitos: ["QFAR1109"] },
+  { id: "CES1146", nombre: "Salud Familiar Comunitaria e Intercultural I", semestre: 3, requisitos: ["CES1145"] },
+  { id: "EL1", nombre: "Electivo Diversidad I", semestre: 3, requisitos: [] },
 
-  // --- Semestre 4
-  { id: "22", nombre: "Química Orgánica II", semestre: 4, creditos: 5, requisitos: ["14"] },
-  { id: "23", nombre: "Lab. de Análisis Químico", semestre: 4, creditos: 4, requisitos: ["8", "17", "15"] },
-  { id: "24", nombre: "Química Analítica II", semestre: 4, creditos: 5, requisitos: ["15"] },
-  { id: "25", nombre: "Fisicoquímica I", semestre: 4, creditos: 6, requisitos: ["9", "10", "14"] },
-  { id: "26", nombre: "Fisiología de Sistemas", semestre: 4, creditos: 4, requisitos: ["19"] },
-  { id: "27", nombre: "Práctica Intermedia", semestre: 4, creditos: 3, requisitos: ["18", "17"] },
-  { id: "28", nombre: "Inglés IV", semestre: 4, creditos: 3, requisitos: ["21"] },
+  // Semestre IV
+  { id: "QFAR1115", nombre: "Química Orgánica II", semestre: 4, requisitos: ["QFAR1111"] },
+  { id: "QFAR1116", nombre: "Química Analítica", semestre: 4, requisitos: ["QFAR1107"] },
+  { id: "QFAR1117", nombre: "Bioquímica General", semestre: 4, requisitos: ["QFAR1111"] },
+  { id: "CES1147", nombre: "Salud Familiar Comunitaria e Intercultural II", semestre: 4, requisitos: ["CES1146"] },
+  { id: "QFAR1114", nombre: "Comunicación en salud", semestre: 4, requisitos: [] },
+  { id: "QFAR1118", nombre: "Fisicoquímica", semestre: 4, requisitos: ["QFAR1107", "QFAR1106"] },
 
+  // --- TERCER AÑO ---
+  // Semestre V
+  { id: "QFAR1119", nombre: "Farmacología General", semestre: 5, requisitos: ["QFAR1115"] },
+  { id: "QFAR1120", nombre: "Microbiología", semestre: 5, requisitos: ["QFAR1102"] },
+  { id: "QFAR1121", nombre: "Análisis Instrumental", semestre: 5, requisitos: [] },
+  { id: "QFAR1122", nombre: "Farmacognosia", semestre: 5, requisitos: ["QFAR1112", "QFAR1115"] },
+  { id: "CES1158", nombre: "Práctica Comunitaria Interdisciplinaria", semestre: 5, requisitos: ["CES1147"] },
+  { id: "EL2", nombre: "Electivo Diversidad II", semestre: 5, requisitos: [] },
 
-  // --- Semestre 5
-  { id: "29", nombre: "Lab. de Análisis Instrumental", semestre: 5, creditos: 4, requisitos: ["23", "24"] },
-  { id: "30", nombre: "Botánica y Farmacognosia", semestre: 5, creditos: 7, requisitos: ["22", "24"] },
-  { id: "31", nombre: "Química de Heterocíclicos y Análisis Espectroscópico", semestre: 5, creditos: 5, requisitos: ["22"] },
-  { id: "32", nombre: "Bioquímica", semestre: 5, creditos: 5, requisitos: ["22"] },
-  { id: "33", nombre: "Farmacología General", semestre: 5, creditos: 6, requisitos: ["23", "26"] },
-  { id: "34", nombre: "Gestión de Calidad", semestre: 5, creditos: 3, requisitos: ["18"] },
+  // Semestre VI
+  { id: "QFAR1123", nombre: "Farmacología de Sistemas I", semestre: 6, requisitos: ["QFAR1113", "QFAR1119"] },
+  { id: "QFAR1124", nombre: "Bioquímica Clínica", semestre: 6, requisitos: ["QFAR1117"] },
+  { id: "QFAR1125", nombre: "Farmacoquímica I", semestre: 6, requisitos: ["QFAR1119"] },
+  { id: "QFAR1126", nombre: "Inmunología", semestre: 6, requisitos: ["QFAR1113", "QFAR1119"] },
+  { id: "QFAR1127", nombre: "Bioestadística", semestre: 6, requisitos: ["QFAR1106"] },
+  { id: "QFAR1131", nombre: "Administración y gestión farmacéutica", semestre: 6, requisitos: ["QFAR1114", "QFAR1119", "QFAR1121", "QFAR1122"] },
 
+  // --- CUARTO AÑO ---
+  // Semestre VII
+  { id: "QFAR1128", nombre: "Farmacología de Sistemas II", semestre: 7, requisitos: ["QFAR1123"] },
+  { id: "QFAR1129", nombre: "Tecnología Farmacéutica I", semestre: 7, requisitos: ["QFAR1116"] },
+  { id: "QFAR1130", nombre: "Farmacoquímica II", semestre: 7, requisitos: ["QFAR1125"] },
+  { id: "QFAR1145", nombre: "Electivo de Especialidad I", semestre: 7, requisitos: ["QFAR1131", "QFAR1125"] },
+  { id: "QFAR1122", nombre: "Práctica Preliminar", semestre: 7, requisitos: ["QFAR1131", "QFAR1125", "QFAR1123", "QFAR1124"] },
+  { id: "ELTE", nombre: "Electivo teológico", semestre: 7, requisitos: [] },
 
+  // Semestre VIII
+  { id: "QFAR1133", nombre: "Toxicología", semestre: 8, requisitos: ["QFAR1128", "QFAR1121"] },
+  { id: "QFAR1134", nombre: "Tecnología farmacéutica", semestre: 8, requisitos: ["QFAR1129"] },
+  { id: "QFAR1135", nombre: "Atención Farmacéutica", semestre: 8, requisitos: ["QFAR1124", "QFAR1128"] },
+  { id: "QFAR1140", nombre: "Cosmética Farmacéutica", semestre: 8, requisitos: ["QFAR1134"] },
+  { id: "QFAR1136", nombre: "Farmacia Comunitaria y Asistencial", semestre: 8, requisitos: ["QFAR1128", "QFAR1129"] },
+  { id: "QFAR1137", nombre: "Seminarios de Investigación", semestre: 8, requisitos: ["QFAR1132"] },
+  { id: "QFAR1138", nombre: "Legislación farmacéutica", semestre: 8, requisitos: ["QFAR1132", "QFAR1128", "QFAR1129"] },
 
-  // --- Semestre 6
-  
-  { id: "35", nombre: "Microbiología", semestre: 6, creditos: 5, requisitos: ["32"] },
-  { id: "36", nombre: "Farmacoquímica I", semestre: 6, creditos: 5, requisitos: ["31","33"] },
-  { id: "37", nombre: "Farmacología de Sistemas I", semestre: 6, creditos: 5, requisitos: ["33"] },
-  { id: "38", nombre: "Fisiopatología Molecular", semestre: 6, creditos: 5, requisitos: ["26","32"] },
-  { id: "39", nombre: "Legislación Farmacéutica", semestre: 6, creditos: 4, requisitos: ["27","34"] },
-  { id: "40", nombre: "Fisicoquímica Farmacéutica", semestre: 6, creditos: 6, requisitos: ["25"] },
+  // --- QUINTO AÑO ---
+  // Semestre IX
+  { id: "QFAR1146", nombre: "Electivo interprofesional", semestre: 9, requisitos: ["QFAR1136"] },
+  { id: "QFAR1139", nombre: "Biofarmacia", semestre: 9, requisitos: ["QFAR1134"] },
+  { id: "QFAR1140", nombre: "Cosmetica Farmaceutica", semestre: 9, requisitos: ["QFAR1134"] },
+  { id: "QFAR1141", nombre: "Farmacia Clínica", semestre: 9, requisitos: ["QFAR1130", "QFAR1135"] },
+  { id: "IET1433", nombre: "Ética profesional", semestre: 9, requisitos: [] },
+  { id: "EL3", nombre: "Electivo diversidad III", semestre: 9, requisitos: [] },
 
-
-
-  // --- Semestre 7
-  { id: "41", nombre: "Fisiopatología y Semiología", semestre: 7, creditos: 5, requisitos: ["38"] },
-  { id: "42", nombre: "Farmacoquímica II", semestre: 7, creditos: 5, requisitos: ["36"] },
-  { id: "43", nombre: "Farmacología de Sistema II", semestre: 7, creditos: 6, requisitos: ["35","37"] },
-  { id: "44", nombre: "Salud Pública", semestre: 7, creditos: 3, requisitos: ["39"] },
-  { id: "45", nombre: "Tecnología Farmacéutica I", semestre: 7, creditos: 6, requisitos: ["39","40"] },
-  { id: "46", nombre: "Operaciones Unitarias", semestre: 7, creditos: 5, requisitos: ["40"] },
-
-
-  
-  // --- Semestre 8
-
-  { id: "47", nombre: "Análisis de Medicamentos, Doping y Drogas", semestre: 8, creditos: 5, requisitos: ["29","42"] },
-  { id: "48", nombre: "Nutrición Clínica", semestre: 8, creditos: 3, requisitos: ["41"] },
-  { id: "49", nombre: "Bioquímica Clínica", semestre: 8, creditos: 4, requisitos: ["41"] },
-  { id: "50", nombre: "Biofarmacia y Farmacocinética", semestre: 8, creditos: 6, requisitos: ["33", "45"] },
-  { id: "51", nombre: "Tecnología Farmacéutica II", semestre: 8, creditos: 6, requisitos: ["45","46"] },
-  { id: "52", nombre: "Administración y Gestión Farmacéutica", semestre: 8, creditos: 3, requisitos: ["45"] },
-  { id: "53", nombre: "Estadística Farmacéutica", semestre: 8, creditos: 3, requisitos: ["44","17"] },
-
-
-
-  // --- Semestre 9
-  { id: "54", nombre: "Farmacología Clínica", semestre: 9, creditos: 6, requisitos: ["43", "49","50"] },
-  { id: "55", nombre: "Bromatología", semestre: 9, creditos: 4, requisitos: ["29","48"] },
-  { id: "56", nombre: "Toxicología", semestre: 9, creditos: 5, requisitos: ["43","49"] },
-  { id: "57", nombre: "Farmacia Asistencial", semestre: 9, creditos: 4, requisitos: ["44","52"] },
-  { id: "58", nombre: "Tecnología Cosmética", semestre: 9, creditos: 4, requisitos: ["51"] },
-  { id: "59", nombre: "Electivo Especializado", semestre: 9, creditos: 7, requisitos: [] },
-
-
-
-  // --- Semestre 10
-  { id: "60", nombre: "Farmacia Clínica", semestre: 10, creditos: 5, requisitos: ["54"] },
-  { id: "61", nombre: "Práctica Profesional en Farmacia", semestre: 10, creditos: 7, requisitos: ["52", "54", "56"] },
-  { id: "62", nombre: "Biotecnolopia Farmacéutica", semestre: 10, creditos: 4, requisitos: ["38","51"] },
-  { id: "63", nombre: "Economia y Marketing Farmacéutico", semestre: 10, creditos: 3, requisitos: ["44","52","54"] },
-  { id: "64", nombre: "Innovación y Proyectos", semestre: 10, creditos: 3, requisitos: ["53"] },
-  { id: "65", nombre: "Electivos Especializados", semestre: 10, creditos: 8, requisitos: [] },
-
-
-
-  // --- Semestre 11
-  { id: "65", nombre: "Actividad de Titulación", semestre: 11, creditos: 30, requisitos: Array.from({ length: 64 }, (_, i) => (i + 1).toString()) }
-
-    ];
-    
+  // Semestre X
+  { id: "QFAR1142", nombre: "Práctica Profesional", semestre: 10, requisitos: ["QFAR1138", "QFAR1141", "QFAR1135", "QFAR1139", "QFAR1136", "QFAR1133"] },
+  { id: "QFAR1143", nombre: "Actividad de Titulación", semestre: 10, requisitos: ["QFAR1137"] },
+  { id: "QFAR1144", nombre: "Electivo de especialidad II", semestre: 10, requisitos: ["QFAR1145"] }
+];
