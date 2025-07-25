@@ -1,4 +1,3 @@
-// data/courses.ts
 export interface Curso {
   id: string;
   nombre: string;
@@ -64,14 +63,13 @@ export const cursos: Curso[] = [
   { id: "QFAR1129", nombre: "Tecnología Farmacéutica I", semestre: 7, requisitos: ["QFAR1116"] },
   { id: "QFAR1130", nombre: "Farmacoquímica II", semestre: 7, requisitos: ["QFAR1125"] },
   { id: "QFAR1145", nombre: "Electivo de Especialidad I", semestre: 7, requisitos: ["QFAR1131", "QFAR1125"] },
-  { id: "QFAR1122", nombre: "Práctica Preliminar", semestre: 7, requisitos: ["QFAR1131", "QFAR1125", "QFAR1123", "QFAR1124"] },
+  { id: "QFAR1132", nombre: "Práctica Preliminar", semestre: 7, requisitos: ["QFAR1131", "QFAR1125", "QFAR1123", "QFAR1124"] },
   { id: "ELTE", nombre: "Electivo teológico", semestre: 7, requisitos: [] },
 
   // Semestre VIII
   { id: "QFAR1133", nombre: "Toxicología", semestre: 8, requisitos: ["QFAR1128", "QFAR1121"] },
-  { id: "QFAR1134", nombre: "Tecnología farmacéutica", semestre: 8, requisitos: ["QFAR1129"] },
+  { id: "QFAR1134", nombre: "Tecnología farmacéutica II", semestre: 8, requisitos: ["QFAR1129"] },
   { id: "QFAR1135", nombre: "Atención Farmacéutica", semestre: 8, requisitos: ["QFAR1124", "QFAR1128"] },
-  { id: "QFAR1140", nombre: "Cosmética Farmacéutica", semestre: 8, requisitos: ["QFAR1134"] },
   { id: "QFAR1136", nombre: "Farmacia Comunitaria y Asistencial", semestre: 8, requisitos: ["QFAR1128", "QFAR1129"] },
   { id: "QFAR1137", nombre: "Seminarios de Investigación", semestre: 8, requisitos: ["QFAR1132"] },
   { id: "QFAR1138", nombre: "Legislación farmacéutica", semestre: 8, requisitos: ["QFAR1132", "QFAR1128", "QFAR1129"] },
@@ -80,7 +78,7 @@ export const cursos: Curso[] = [
   // Semestre IX
   { id: "QFAR1146", nombre: "Electivo interprofesional", semestre: 9, requisitos: ["QFAR1136"] },
   { id: "QFAR1139", nombre: "Biofarmacia", semestre: 9, requisitos: ["QFAR1134"] },
-  { id: "QFAR1140", nombre: "Cosmetica Farmaceutica", semestre: 9, requisitos: ["QFAR1134"] },
+  { id: "QFAR1140", nombre: "Cosmética Farmacéutica", semestre: 9, requisitos: ["QFAR1134"] },
   { id: "QFAR1141", nombre: "Farmacia Clínica", semestre: 9, requisitos: ["QFAR1130", "QFAR1135"] },
   { id: "IET1433", nombre: "Ética profesional", semestre: 9, requisitos: [] },
   { id: "EL3", nombre: "Electivo diversidad III", semestre: 9, requisitos: [] },
