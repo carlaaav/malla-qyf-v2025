@@ -1,7 +1,89 @@
-import React, { useState, useEffect } from 'react';
-import { cursos as todosLosCursos, Curso } from './data/cursos';
+import React, { useState, useEffect } from "react";
 
-const romanos = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI"];
+type Curso = {
+  id: string;
+  nombre: string;
+  semestre: number;
+  creditos: number;
+  requisitos: string[];
+};
+
+const cursos: Curso[] = [
+  // Primer año
+  { id: "QFAR1101", nombre: "Matemáticas I", semestre: 1, creditos: 6, requisitos: [] },
+  { id: "QFAR1102", nombre: "Química I", semestre: 1, creditos: 6, requisitos: [] },
+  { id: "QFAR1103", nombre: "Técnicas Básicas de Laboratorio", semestre: 1, creditos: 4, requisitos: [] },
+  { id: "QFAR1104", nombre: "Biología Celular y Molecular", semestre: 1, creditos: 5, requisitos: [] },
+  { id: "QFAR1105", nombre: "Introducción a las Ciencias Farmacéuticas", semestre: 1, creditos: 3, requisitos: [] },
+  { id: "CES1144", nombre: "Salud, Bienestar y Sociedad", semestre: 1, creditos: 3, requisitos: [] },
+
+  { id: "QFAR1106", nombre: "Matemáticas II", semestre: 2, creditos: 6, requisitos: [] },
+  { id: "QFAR1107", nombre: "Química II", semestre: 2, creditos: 6, requisitos: ["QFAR1102", "QFAR1103"] },
+  { id: "QFAR1109", nombre: "Fisiología y Patología I", semestre: 2, creditos: 6, requisitos: ["QFAR1104"] },
+  { id: "CES1145", nombre: "Salud Pública", semestre: 2, creditos: 3, requisitos: ["CES1144"] },
+  { id: "ELAC", nombre: "Electivo Antrológico Cristiano ELAC", semestre: 2, creditos: 3, requisitos: [] },
+  { id: "QFAR1110", nombre: "Anatomía e Histología", semestre: 2, creditos: 5, requisitos: [] },
+
+  // Segundo año
+  { id: "QFAR1111", nombre: "Química Orgánica I", semestre: 3, creditos: 6, requisitos: ["QFAR1107"] },
+  { id: "QFAR1112", nombre: "Botánica Farmacéutica", semestre: 3, creditos: 4, requisitos: [] },
+  { id: "QFAR1108", nombre: "Biofísica", semestre: 3, creditos: 4, requisitos: [] },
+  { id: "QFAR1113", nombre: "Fisiología y Patología II", semestre: 3, creditos: 6, requisitos: ["QFAR1109"] },
+  { id: "CES1146", nombre: "Salud Familiar Comunitaria e Intercultural I", semestre: 3, creditos: 3, requisitos: ["CES1145"] },
+  { id: "EL1", nombre: "Electivo Diversidad I EL1", semestre: 3, creditos: 3, requisitos: [] },
+
+  { id: "QFAR1115", nombre: "Química Orgánica II", semestre: 4, creditos: 6, requisitos: ["QFAR1111"] },
+  { id: "QFAR1116", nombre: "Química Analítica", semestre: 4, creditos: 5, requisitos: ["QFAR1107"] },
+  { id: "QFAR1117", nombre: "Bioquímica General", semestre: 4, creditos: 5, requisitos: ["QFAR1111"] },
+  { id: "CES1147", nombre: "Salud Familiar Comunitaria e Intercultural II", semestre: 4, creditos: 3, requisitos: ["CES1146"] },
+  { id: "QFAR1114", nombre: "Comunicación en salud", semestre: 4, creditos: 3, requisitos: [] },
+  { id: "QFAR1118", nombre: "Fisicoquímica", semestre: 4, creditos: 5, requisitos: ["QFAR1107", "QFAR1106"] },
+
+  // Tercer año
+  { id: "QFAR1119", nombre: "Farmacología General", semestre: 5, creditos: 5, requisitos: ["QFAR1115"] },
+  { id: "QFAR1120", nombre: "Microbiología", semestre: 5, creditos: 4, requisitos: ["QFAR1102"] },
+  { id: "QFAR1121", nombre: "Análisis Instrumental", semestre: 5, creditos: 4, requisitos: [] },
+  { id: "QFAR1122", nombre: "Farmacognosia", semestre: 5, creditos: 4, requisitos: ["QFAR1112", "QFAR1115"] },
+  { id: "CES1158", nombre: "Práctica Comunitaria Interdisciplinaria", semestre: 5, creditos: 3, requisitos: ["CES1147"] },
+  { id: "EL2", nombre: "Electivo Diversidad II EL2", semestre: 5, creditos: 3, requisitos: [] },
+
+  { id: "QFAR1123", nombre: "Farmacología de Sistemas I", semestre: 6, creditos: 5, requisitos: ["QFAR1113", "QFAR1119"] },
+  { id: "QFAR1124", nombre: "Bioquímica Clínica", semestre: 6, creditos: 4, requisitos: ["QFAR1117", "QFAR1116"] },
+  { id: "QFAR1125", nombre: "Farmacoquímica I", semestre: 6, creditos: 5, requisitos: ["QFAR1119"] },
+  { id: "QFAR1126", nombre: "Inmunología", semestre: 6, creditos: 4, requisitos: ["QFAR1113", "QFAR1119"] },
+  { id: "QFAR1127", nombre: "Bioestadística", semestre: 6, creditos: 3, requisitos: ["QFAR1106"] },
+  { id: "QFAR1131", nombre: "Administración y gestión farmacéutica", semestre: 6, creditos: 4, requisitos: ["QFAR1114", "QFAR1119", "QFAR1121", "QFAR1122"] },
+
+  // Cuarto año
+  { id: "QFAR1128", nombre: "Farmacología de Sistemas II", semestre: 7, creditos: 5, requisitos: ["QFAR1123"] },
+  { id: "QFAR1129", nombre: "Tecnología Farmacéutica I", semestre: 7, creditos: 5, requisitos: ["QFAR1116"] },
+  { id: "QFAR1130", nombre: "Farmacoquímica II", semestre: 7, creditos: 5, requisitos: ["QFAR1125"] },
+  { id: "QFAR1145", nombre: "Electivo de Especialidad I", semestre: 7, creditos: 3, requisitos: ["QFAR1131", "QFAR1125"] },
+  { id: "QFAR1132", nombre: "Práctica Preliminar", semestre: 7, creditos: 3, requisitos: ["QFAR1131", "QFAR1125", "QFAR1123", "QFAR1124"] },
+  { id: "ELTE", nombre: "Electivo Teológico ELTE", semestre: 7, creditos: 3, requisitos: [] },
+
+  { id: "QFAR1133", nombre: "Toxicología", semestre: 8, creditos: 4, requisitos: ["QFAR1128", "QFAR1121"] },
+  { id: "QFAR1134", nombre: "Tecnología Farmacéutica II", semestre: 8, creditos: 5, requisitos: ["QFAR1129"] },
+  { id: "QFAR1135", nombre: "Atención Farmacéutica", semestre: 8, creditos: 4, requisitos: ["QFAR1124", "QFAR1128"] },
+  { id: "QFAR1140", nombre: "Cosmética Farmacéutica", semestre: 8, creditos: 3, requisitos: ["QFAR1134"] },
+  { id: "QFAR1136", nombre: "Farmacia Comunitaria y Asistencial", semestre: 8, creditos: 3, requisitos: ["QFAR1128", "QFAR1129"] },
+  { id: "QFAR1137", nombre: "Seminarios de Investigación", semestre: 8, creditos: 3, requisitos: ["QFAR1132"] },
+  { id: "QFAR1138", nombre: "Legislación Farmacéutica", semestre: 8, creditos: 3, requisitos: ["QFAR1132", "QFAR1128", "QFAR1129"] },
+
+  // Quinto año
+  { id: "QFAR1146", nombre: "Electivo Interprofesional", semestre: 9, creditos: 3, requisitos: ["QFAR1136"] },
+  { id: "QFAR1139", nombre: "Biofarmacia", semestre: 9, creditos: 4, requisitos: ["QFAR1134"] },
+  { id: "QFAR1140", nombre: "Cosmética Farmacéutica", semestre: 9, creditos: 3, requisitos: ["QFAR1134"] },
+  { id: "QFAR1141", nombre: "Farmacia Clínica", semestre: 9, creditos: 5, requisitos: ["QFAR1130", "QFAR1135"] },
+  { id: "IET1433", nombre: "Ética Profesional", semestre: 9, creditos: 3, requisitos: [] },
+  { id: "EL3", nombre: "Electivo Diversidad III EL3", semestre: 9, creditos: 3, requisitos: [] },
+
+  { id: "QFAR1142", nombre: "Práctica Profesional", semestre: 10, creditos: 8, requisitos: ["QFAR1138", "QFAR1141", "QFAR1135", "QFAR1139", "QFAR1136", "QFAR1133"] },
+  { id: "QFAR1143", nombre: "Actividad de Titulación", semestre: 10, creditos: 3, requisitos: ["QFAR1137"] },
+  { id: "QFAR1144", nombre: "Electivo de Especialidad II", semestre: 10, creditos: 3, requisitos: ["QFAR1145"] },
+];
+
+const romanos = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"];
 
 const App = () => {
   const [cursosAprobados, setCursosAprobados] = useState<string[]>(() => {
@@ -14,209 +96,39 @@ const App = () => {
   }, [cursosAprobados]);
 
   const estaDesbloqueado = (curso: Curso): boolean =>
-    curso.requisitos.every(req => cursosAprobados.includes(req));
+    curso.requisitos.every((req) => cursosAprobados.includes(req));
 
   const toggleCurso = (id: string) => {
-    setCursosAprobados(prev =>
-      prev.includes(id) ? prev.filter(c => c !== id) : [...prev, id]
+    setCursosAprobados((prev) =>
+      prev.includes(id) ? prev.filter((c) => c !== id) : [...prev, id]
     );
   };
 
   const cursosPorSemestre: { [sem: number]: Curso[] } = {};
-  for (const curso of todosLosCursos) {
+  for (const curso of cursos) {
     if (!cursosPorSemestre[curso.semestre]) {
       cursosPorSemestre[curso.semestre] = [];
     }
     cursosPorSemestre[curso.semestre].push(curso);
   }
 
-  const porcentaje = (cursosAprobados.length / todosLosCursos.length) * 100;
+  const porcentaje = (cursosAprobados.length / cursos.length) * 100;
   const creditosTotales = cursosAprobados
-  .map(id => todosLosCursos.find(c => c.id === id)?.creditos || 0)
-  .reduce((acc, cur) => acc + cur, 0);
+    .map((id) => cursos.find((c) => c.id === id)?.creditos || 0)
+    .reduce((acc, cur) => acc + cur, 0);
 
   const [modoOscuro, setModoOscuro] = useState(() => {
     const guardado = localStorage.getItem("modoOscuro");
     return guardado ? JSON.parse(guardado) : false;
   });
-  
+
   useEffect(() => {
     localStorage.setItem("modoOscuro", JSON.stringify(modoOscuro));
   }, [modoOscuro]);
-  
 
   return (
     <div
-          className={`relative min-h-screen p-6 overflow-x-hidden overflow-y-auto transition-colors duration-500 ${
-            modoOscuro ? "bg-[#e7e0f6] text-[#3c2a52]" : "bg-pink-50 text-pink-800"
-          }`}
-        >
-
-        <button
-            onClick={() => setModoOscuro(!modoOscuro)}
-            className={`absolute top-4 right-6 text-sm px-3 py-1 rounded transition ${
-              modoOscuro
-                ? "bg-purple-600 text-white hover:bg-purple-500"
-                : "bg-pink-200 text-pink-800 hover:bg-pink-300"
-            }`}
-          >
-            {modoOscuro ? "🌙 Modo Oscuro" : "☀️ Modo Claro"}
-          </button>
-
-
-          <h1 className={`text-2xl font-bold text-center mb-4 ${modoOscuro ? "text-[#4b3a60]" : "text-pink-800"}`}>
-
-        Malla Interactiva – Química y Farmacia V5 – U. de Chile  </h1>
-
-      {/* Progreso total */}
-      <div className="text-center mb-5">
-      <div className="flex justify-center items-center gap-6 text-pink-700 font-semibold mb-2">
-        <p className="text-lg">Avance total: {porcentaje.toFixed(1)}%</p>
-        <p className="text-ms">Créditos acumulados: <span className="font-bold">{creditosTotales}</span></p>
-      </div>
-
-
-      <div className={`w-full max-w-md mx-auto rounded-full h-4 mt-2 shadow-inner ${modoOscuro ? "bg-[#e8d3f8]" : "bg-pink-100"}`}>
-          <div
-      className={`${modoOscuro ? "bg-[#be9fe1]" : "bg-pink-400"} h-4 rounded-full transition-all duration-500`}
-      style={{ width: `${porcentaje}%` }}
-            ></div>
-
-        </div>
-
-        <button
-            onClick={() => setCursosAprobados([])}
-            className={`mt-4 font-semibold px-4 py-2 rounded shadow transition-colors duration-300 ${
-              modoOscuro
-                ? "bg-[#d5b8ff] hover:bg-[#c7a7fa] text-[#4b3a60]"
-                : "bg-pink-200 hover:bg-pink-300 text-pink-800"
-            }`}
-          >
-            Reiniciar malla
-          </button>
-
-      </div>
-
-      <div className="flex justify-center">
-
-        <div className="grid grid-rows-[auto_auto_1fr] gap-2">
-          {/* Fila de Años */}
-          <div className="grid grid-cols-11 gap-1 mb-0.5">
-            {[
-              { año: "Año 1", span: 2 },
-              { año: "Año 2", span: 2 },
-              { año: "Año 3", span: 2 },
-              { año: "Año 4", span: 2 },
-              { año: "Año 5", span: 2 },
-              { año: "Año 5 1/2", span: 1 }
-            ].map(({ año, span }, index) => (
-              <div
-                key={index}
-                style={{ gridColumn: `span ${span} / span ${span}` }}
-                className={`text-center font-bold py-2 rounded-md text-sm ${
-                  modoOscuro ? "bg-purple-700 text-white" : "bg-pink-300 text-white"
-                }`}
-              >
-                {año}
-              </div>
-            ))}
-          </div>
-
-
-
-          {/* Fila de Semestres */}
-          <div className="grid grid-cols-11 gap-2 mb-0.5">
-            {romanos.map((r, i) => (
-              <div
-                key={i}
-                className={`text-center font-bold py-1 rounded-md shadow text-sm ${
-                  modoOscuro ? "bg-purple-600 text-white" : "bg-pink-200"
-                }`}
-              >
-                {r}
-              </div>
-            ))}
-          </div>
-
-
-          {/* Cursos */}
-          <div className="grid grid-cols-11 gap-4">
-            {Array.from({ length: 11 }).map((_, semestreIndex) => {
-              const semestre = semestreIndex + 1;
-              const cursos = cursosPorSemestre[semestre] || [];
-              return (
-                <div key={semestre} className="flex flex-col gap-4 items-center">
-                  {cursos.map(curso => {
-                    const desbloqueado = estaDesbloqueado(curso);
-                    const aprobado = cursosAprobados.includes(curso.id);
-                    return (
-                      <div key={curso.id} className="relative group w-fit">
-                      <button
-                          className={`w-[8rem] h-[5.5rem] flex flex-col justify-center items-center rounded-md shadow text-center text-[10px] font-medium
-                          transition-all duration-300 ease-in-out transform
-                            ${aprobado
-                              ? modoOscuro
-                                ? 'bg-[#b38ce7] text-white scale-105'  // pastel lavanda
-                                : 'bg-pink-300 text-white scale-105'
-                              : desbloqueado
-                              ? modoOscuro
-                                ? 'bg-[#e6ccf2] text-[#3c2a52] hover:bg-[#d7b8ec] hover:scale-105'
-                                : 'bg-pink-100 text-pink-800 hover:bg-pink-200 hover:scale-105'
-                              : modoOscuro
-                                ? 'bg-[#f3e8fb] text-[#a58cb0] cursor-not-allowed'
-                                : 'bg-pink-50 text-pink-300 cursor-not-allowed'}      
-                            
-                          `}
-                          disabled={!desbloqueado && !aprobado}
-                          onClick={() => toggleCurso(curso.id)}
-                        >
-                          {/* Nombre del curso */}
-                          <div className="absolute top-1 left-2 text-[10px] text-pink-500 font-bold opacity-80">
-                            {curso.id}
-                          </div>
-                          <div className="font-semibold text-[13px] leading-snug text-center">
-                            {curso.nombre}
-                          </div>
-                          <div className="text-[11px] text-gray-500 mt-1">
-                            Créditos: {curso.creditos}
-                          </div>
-
-                          {/* Emoji al aprobar */}
-                          
-                            {aprobado && (
-                              <span className="absolute top-1 right-1 text-white text-lg animate-fadeIn">✨</span>
-                            )}
-                            
-                      </button>
-                      {/* Tooltip visual bonito */}
-                      {!desbloqueado && !aprobado && curso.requisitos.length > 0 && (
-                        <div className={`absolute -top-20 left-1/2 -translate-x-1/2 w-64 rounded-md shadow-lg px-3 py-2 z-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none ${
-                          modoOscuro
-                            ? "bg-[#f5e8ff] border border-[#e0cfff] text-[#4b3a60]"
-                            : "bg-white border border-pink-300 text-pink-800"
-                        }`}>
-                        
-                          Debes aprobar:
-                          <ul className="list-disc list-inside mt-1">
-                            {curso.requisitos.map(reqId => {
-                              const reqCurso = todosLosCursos.find(c => c.id === reqId);
-                              return <li key={reqId}>{reqCurso?.nombre || reqId}</li>;
-                            })}
-                          </ul>
-                        </div>
-                      )}
-                    </div>
-                    );
-                  })}
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default App;
-
+      className={`relative min-h-screen p-6 overflow-x-hidden overflow-y-auto transition-colors duration-500 ${
+        modoOscuro ? "bg-[#e7e0f6] text-[#3c2a52]" : "bg-pink-50 text-pink-800"
+      }`}
+    >
