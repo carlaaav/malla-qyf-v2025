@@ -1,7 +1,17 @@
-body {
-    @apply bg-gray-100 min-h-screen;
-  }
-  
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+/* Transiciones suaves */
+.ramo-disponible {
+  transition: all 0.2s ease;
+}
+
+.ramo-disponible:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
