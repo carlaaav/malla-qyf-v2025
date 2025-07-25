@@ -1,114 +1,93 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { cursos } from './data/cursos';
-import { RamoCard } from './components/RamoCard';
 import './index.css';
 
 export default function App() {
-  const [aprobados, setAprobados] = useState<string[]>(() => {
-    // Cargar desde localStorage si existe
-    const saved = localStorage.getItem('aprobados');
-    return saved ? JSON.parse(saved) : [];
-  });
+  const [aprobados, setAprobados] = useState<string[]>([]);
+  const [loaded, setLoaded] = useState(false);
 
-  // Guardar en localStorage cuando cambia
   useEffect(() => {
-    localStorage.setItem('aprobados', JSON.stringify(aprobados));
-  }, [aprobados]);
+    setLoaded(true);
+  }, []);
 
   const toggleAprobado = (id: string) => {
-    setAprobados(prev => 
-      prev.includes(id) ? prev.filter(r => r !== id) : [...prev, id]
-    );
+    setAprobados(prev => prev.includes(id) ? prev.filter(r => r !== id) : [...prev, id]);
   };
 
-  const getEstadoRamo = useMemo(() => {
-    return (curso: typeof cursos[0]) => {
-      if (aprobados.includes(curso.id)) return 'aprobado';
-      return curso.requisitos.every(req => aprobados.includes(req)) 
-        ? 'disponible' 
-        : 'bloqueado';
-    };
-  }, [aprobados]);
-
-  // Calcular progreso memoizado
-  const progreso = useMemo(() => {
+  // Agrupar por año (2 semestres = 1 año)
+  const años = Array.from({ length: 5 }, (_, i) => {
+    const semestres = [i*2 + 1, i*2 + 2];
     return {
-      porcentaje: (aprobados.length / cursos.length) * 100,
-      aprobados: aprobados.length,
-      total: cursos.length
+      año: i + 1,
+      semestres: semestres.map(sem => cursos.filter(c => c.semestre === sem))
     };
-  }, [aprobados]);
-
-  const reiniciarProgreso = () => {
-    if (confirm('¿Estás seguro de que quieres reiniciar todo tu progreso?')) {
-      setAprobados([]);
-    }
-  };
+  });
 
   return (
-    <div className="p-4 bg-gray-50 min-h-screen">
-      <header className="max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold text-center mb-6 text-purple-800">
-          Malla Curricular de Química y Farmacia
+    <div className={`min-h-screen bg-gray-50 p-6 ${loaded ? 'animate-fade-in' : ''}`}>
+      {/* Cabecera con nueva tipografía */}
+      <header className="mb-8 bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+        <h1 className="text-3xl font-display text-blue-800 mb-2">
+          Malla Curricular <span className="text-blue-600">Química y Farmacia</span>
         </h1>
-
-        {/* Panel de progreso */}
-        <div className="mb-6 p-4 bg-white rounded-lg shadow">
-          <div className="flex justify-between items-center mb-2">
-            <span className="font-medium">
-              Ramos aprobados: <span className="text-purple-600">{progreso.aprobados}</span>/{progreso.total}
-            </span>
-            <span className="text-sm font-semibold text-purple-700">
-              Progreso: {progreso.porcentaje.toFixed(1)}%
-            </span>
-          </div>
-          
-          {/* Barra de progreso */}
-          <div className="w-full bg-gray-200 rounded-full h-2.5">
-            <div 
-              className="bg-purple-600 h-2.5 rounded-full transition-all duration-500" 
-              style={{ width: `${progreso.porcentaje}%` }}
-              aria-valuenow={progreso.porcentaje}
-              aria-valuemin={0}
-              aria-valuemax={100}
-            ></div>
-          </div>
-        </div>
-
-        {/* Botón de reinicio */}
-        <div className="flex justify-center mb-6">
-          <button
-            onClick={reiniciarProgreso}
-            className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition-colors focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2"
-            aria-label="Reiniciar progreso"
-          >
-            Reiniciar progreso
-          </button>
+        <div className="flex gap-4 text-lg">
+          <span><i className="fas fa-check-circle text-green-500 mr-1"></i> {aprobados.length}/{cursos.length}</span>
+          <span><i className="fas fa-chart-line text-blue-500 mr-1"></i> {Math.round((aprobados.length / cursos.length) * 100)}%</span>
         </div>
       </header>
 
-      {/* Malla por semestres */}
-      <main className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(semestre => (
-          <section key={semestre} className="bg-white p-4 rounded-lg shadow-lg border border-purple-100">
-            <h2 className="text-xl font-bold mb-3 border-b-2 border-purple-200 pb-2 text-purple-700">
-              Semestre {semestre}
+      {/* Malla con tipografía mejorada */}
+      <div className="space-y-8">
+        {años.map(({ año, semestres }) => (
+          <section key={año} className="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
+            <h2 className="text-2xl font-display text-blue-700 mb-4 flex items-center">
+              <i className="fas fa-calendar-alt mr-2 text-blue-400"></i>
+              Año {año}
             </h2>
-            <div className="space-y-2">
-              {cursos
-                .filter(c => c.semestre === semestre)
-                .map(curso => (
-                  <RamoCard
-                    key={curso.id}
-                    curso={curso}
-                    estado={getEstadoRamo(curso)}
-                    onToggle={() => toggleAprobado(curso.id)}
-                  />
-                ))}
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {semestres.map((ramos, idx) => (
+                <div key={idx} className="border border-gray-200 rounded-lg p-4">
+                  <h3 className="font-display text-lg text-blue-600 mb-3">
+                    Semestre {(año-1)*2 + idx + 1}
+                  </h3>
+                  <div className="space-y-2">
+                    {ramos.map(curso => {
+                      const estaAprobado = aprobados.includes(curso.id);
+                      const disponible = curso.requisitos.every(r => aprobados.includes(r));
+                      
+                      return (
+                        <button
+                          key={curso.id}
+                          onClick={() => disponible && toggleAprobado(curso.id)}
+                          className={`
+                            ramo-card w-full p-3 text-left rounded-lg border
+                            ${estaAprobado
+                              ? 'bg-green-50 border-green-300 text-green-800'
+                              : disponible
+                                ? 'bg-white border-gray-200 hover:border-blue-300'
+                                : 'bg-gray-50 border-gray-200 text-gray-500'
+                            }
+                          `}
+                          disabled={!disponible}
+                        >
+                          <div className="font-medium flex justify-between items-start">
+                            <span>{curso.nombre}</span>
+                            {estaAprobado && (
+                              <i className="fas fa-check-circle text-green-500 ml-2"></i>
+                            )}
+                          </div>
+                          <div className="text-xs font-mono mt-1 text-gray-500">{curso.id}</div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
             </div>
           </section>
         ))}
-      </main>
+      </div>
     </div>
   );
 }
