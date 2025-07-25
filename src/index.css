@@ -2,35 +2,26 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  font-family: 'Nunito', sans-serif;
-  background-color: #fff5f7;
+@layer base {
+  body {
+    font-family: 'Nunito', sans-serif;
+  }
+  h1, h2, h3 {
+    font-family: 'Comfortaa', cursive;
+  }
 }
 
-h1, h2, h3 {
-  font-family: 'Comfortaa', cursive;
+/* Scroll horizontal personalizado */
+.horizontal-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #fb7185 #fff1f2;
 }
 
-/* Estilo rosado principal */
-.bg-rosado {
-  background-color: #ffd6e8;
+.horizontal-scroll::-webkit-scrollbar {
+  height: 8px;
 }
 
-.border-rosado {
-  border-color: #ff85b8;
-}
-
-.text-rosado {
-  color: #ff2d75;
-}
-
-/* Tarjetas de ramos */
-.ramo-card {
-  transition: all 0.2s;
-  border-radius: 12px;
-}
-
-.ramo-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 4px 15px rgba(255, 45, 117, 0.2);
+.horizontal-scroll::-webkit-scrollbar-thumb {
+  background-color: #fb7185;
+  border-radius: 4px;
 }
