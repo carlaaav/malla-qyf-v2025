@@ -2,42 +2,35 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Tipografía premium */
 body {
-  font-family: 'Roboto Flex', sans-serif;
-  @apply text-gray-800 antialiased;
+  font-family: 'Nunito', sans-serif;
+  background-color: #fff5f7;
 }
 
-h1, h2, h3, h4, .font-display {
-  font-family: 'Montserrat', sans-serif;
-  @apply font-semibold tracking-tight;
+h1, h2, h3 {
+  font-family: 'Comfortaa', cursive;
 }
 
-/* Efectos especiales */
+/* Estilo rosado principal */
+.bg-rosado {
+  background-color: #ffd6e8;
+}
+
+.border-rosado {
+  border-color: #ff85b8;
+}
+
+.text-rosado {
+  color: #ff2d75;
+}
+
+/* Tarjetas de ramos */
 .ramo-card {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.2s;
+  border-radius: 12px;
 }
 
 .ramo-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-}
-
-/* Scroll personalizado */
-::-webkit-scrollbar {
-  @apply w-2 h-2;
-}
-
-::-webkit-scrollbar-thumb {
-  @apply bg-blue-200 rounded-full;
-}
-
-/* Animación de carga */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(5px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.animate-fade-in {
-  animation: fadeIn 0.5s ease-out forwards;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 15px rgba(255, 45, 117, 0.2);
 }
