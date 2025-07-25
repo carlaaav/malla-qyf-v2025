@@ -1,134 +1,184 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import "./index.css";
 
-type Curso = {
-  id: string;
-  nombre: string;
-  semestre: number;
-  creditos: number;
-  requisitos: string[];
-};
-
-const cursos: Curso[] = [
-  // Primer año
-  { id: "QFAR1101", nombre: "Matemáticas I", semestre: 1, creditos: 6, requisitos: [] },
-  { id: "QFAR1102", nombre: "Química I", semestre: 1, creditos: 6, requisitos: [] },
-  { id: "QFAR1103", nombre: "Técnicas Básicas de Laboratorio", semestre: 1, creditos: 4, requisitos: [] },
-  { id: "QFAR1104", nombre: "Biología Celular y Molecular", semestre: 1, creditos: 5, requisitos: [] },
-  { id: "QFAR1105", nombre: "Introducción a las Ciencias Farmacéuticas", semestre: 1, creditos: 3, requisitos: [] },
-  { id: "CES1144", nombre: "Salud, Bienestar y Sociedad", semestre: 1, creditos: 3, requisitos: [] },
-
-  { id: "QFAR1106", nombre: "Matemáticas II", semestre: 2, creditos: 6, requisitos: [] },
-  { id: "QFAR1107", nombre: "Química II", semestre: 2, creditos: 6, requisitos: ["QFAR1102", "QFAR1103"] },
-  { id: "QFAR1109", nombre: "Fisiología y Patología I", semestre: 2, creditos: 6, requisitos: ["QFAR1104"] },
-  { id: "CES1145", nombre: "Salud Pública", semestre: 2, creditos: 3, requisitos: ["CES1144"] },
-  { id: "ELAC", nombre: "Electivo Antrológico Cristiano ELAC", semestre: 2, creditos: 3, requisitos: [] },
-  { id: "QFAR1110", nombre: "Anatomía e Histología", semestre: 2, creditos: 5, requisitos: [] },
-
-  // Segundo año
-  { id: "QFAR1111", nombre: "Química Orgánica I", semestre: 3, creditos: 6, requisitos: ["QFAR1107"] },
-  { id: "QFAR1112", nombre: "Botánica Farmacéutica", semestre: 3, creditos: 4, requisitos: [] },
-  { id: "QFAR1108", nombre: "Biofísica", semestre: 3, creditos: 4, requisitos: [] },
-  { id: "QFAR1113", nombre: "Fisiología y Patología II", semestre: 3, creditos: 6, requisitos: ["QFAR1109"] },
-  { id: "CES1146", nombre: "Salud Familiar Comunitaria e Intercultural I", semestre: 3, creditos: 3, requisitos: ["CES1145"] },
-  { id: "EL1", nombre: "Electivo Diversidad I EL1", semestre: 3, creditos: 3, requisitos: [] },
-
-  { id: "QFAR1115", nombre: "Química Orgánica II", semestre: 4, creditos: 6, requisitos: ["QFAR1111"] },
-  { id: "QFAR1116", nombre: "Química Analítica", semestre: 4, creditos: 5, requisitos: ["QFAR1107"] },
-  { id: "QFAR1117", nombre: "Bioquímica General", semestre: 4, creditos: 5, requisitos: ["QFAR1111"] },
-  { id: "CES1147", nombre: "Salud Familiar Comunitaria e Intercultural II", semestre: 4, creditos: 3, requisitos: ["CES1146"] },
-  { id: "QFAR1114", nombre: "Comunicación en salud", semestre: 4, creditos: 3, requisitos: [] },
-  { id: "QFAR1118", nombre: "Fisicoquímica", semestre: 4, creditos: 5, requisitos: ["QFAR1107", "QFAR1106"] },
-
-  // Tercer año
-  { id: "QFAR1119", nombre: "Farmacología General", semestre: 5, creditos: 5, requisitos: ["QFAR1115"] },
-  { id: "QFAR1120", nombre: "Microbiología", semestre: 5, creditos: 4, requisitos: ["QFAR1102"] },
-  { id: "QFAR1121", nombre: "Análisis Instrumental", semestre: 5, creditos: 4, requisitos: [] },
-  { id: "QFAR1122", nombre: "Farmacognosia", semestre: 5, creditos: 4, requisitos: ["QFAR1112", "QFAR1115"] },
-  { id: "CES1158", nombre: "Práctica Comunitaria Interdisciplinaria", semestre: 5, creditos: 3, requisitos: ["CES1147"] },
-  { id: "EL2", nombre: "Electivo Diversidad II EL2", semestre: 5, creditos: 3, requisitos: [] },
-
-  { id: "QFAR1123", nombre: "Farmacología de Sistemas I", semestre: 6, creditos: 5, requisitos: ["QFAR1113", "QFAR1119"] },
-  { id: "QFAR1124", nombre: "Bioquímica Clínica", semestre: 6, creditos: 4, requisitos: ["QFAR1117", "QFAR1116"] },
-  { id: "QFAR1125", nombre: "Farmacoquímica I", semestre: 6, creditos: 5, requisitos: ["QFAR1119"] },
-  { id: "QFAR1126", nombre: "Inmunología", semestre: 6, creditos: 4, requisitos: ["QFAR1113", "QFAR1119"] },
-  { id: "QFAR1127", nombre: "Bioestadística", semestre: 6, creditos: 3, requisitos: ["QFAR1106"] },
-  { id: "QFAR1131", nombre: "Administración y gestión farmacéutica", semestre: 6, creditos: 4, requisitos: ["QFAR1114", "QFAR1119", "QFAR1121", "QFAR1122"] },
-
-  // Cuarto año
-  { id: "QFAR1128", nombre: "Farmacología de Sistemas II", semestre: 7, creditos: 5, requisitos: ["QFAR1123"] },
-  { id: "QFAR1129", nombre: "Tecnología Farmacéutica I", semestre: 7, creditos: 5, requisitos: ["QFAR1116"] },
-  { id: "QFAR1130", nombre: "Farmacoquímica II", semestre: 7, creditos: 5, requisitos: ["QFAR1125"] },
-  { id: "QFAR1145", nombre: "Electivo de Especialidad I", semestre: 7, creditos: 3, requisitos: ["QFAR1131", "QFAR1125"] },
-  { id: "QFAR1132", nombre: "Práctica Preliminar", semestre: 7, creditos: 3, requisitos: ["QFAR1131", "QFAR1125", "QFAR1123", "QFAR1124"] },
-  { id: "ELTE", nombre: "Electivo Teológico ELTE", semestre: 7, creditos: 3, requisitos: [] },
-
-  { id: "QFAR1133", nombre: "Toxicología", semestre: 8, creditos: 4, requisitos: ["QFAR1128", "QFAR1121"] },
-  { id: "QFAR1134", nombre: "Tecnología Farmacéutica II", semestre: 8, creditos: 5, requisitos: ["QFAR1129"] },
-  { id: "QFAR1135", nombre: "Atención Farmacéutica", semestre: 8, creditos: 4, requisitos: ["QFAR1124", "QFAR1128"] },
-  { id: "QFAR1140", nombre: "Cosmética Farmacéutica", semestre: 8, creditos: 3, requisitos: ["QFAR1134"] },
-  { id: "QFAR1136", nombre: "Farmacia Comunitaria y Asistencial", semestre: 8, creditos: 3, requisitos: ["QFAR1128", "QFAR1129"] },
-  { id: "QFAR1137", nombre: "Seminarios de Investigación", semestre: 8, creditos: 3, requisitos: ["QFAR1132"] },
-  { id: "QFAR1138", nombre: "Legislación Farmacéutica", semestre: 8, creditos: 3, requisitos: ["QFAR1132", "QFAR1128", "QFAR1129"] },
-
-  // Quinto año
-  { id: "QFAR1146", nombre: "Electivo Interprofesional", semestre: 9, creditos: 3, requisitos: ["QFAR1136"] },
-  { id: "QFAR1139", nombre: "Biofarmacia", semestre: 9, creditos: 4, requisitos: ["QFAR1134"] },
-  { id: "QFAR1140", nombre: "Cosmética Farmacéutica", semestre: 9, creditos: 3, requisitos: ["QFAR1134"] },
-  { id: "QFAR1141", nombre: "Farmacia Clínica", semestre: 9, creditos: 5, requisitos: ["QFAR1130", "QFAR1135"] },
-  { id: "IET1433", nombre: "Ética Profesional", semestre: 9, creditos: 3, requisitos: [] },
-  { id: "EL3", nombre: "Electivo Diversidad III EL3", semestre: 9, creditos: 3, requisitos: [] },
-
-  { id: "QFAR1142", nombre: "Práctica Profesional", semestre: 10, creditos: 8, requisitos: ["QFAR1138", "QFAR1141", "QFAR1135", "QFAR1139", "QFAR1136", "QFAR1133"] },
-  { id: "QFAR1143", nombre: "Actividad de Titulación", semestre: 10, creditos: 3, requisitos: ["QFAR1137"] },
-  { id: "QFAR1144", nombre: "Electivo de Especialidad II", semestre: 10, creditos: 3, requisitos: ["QFAR1145"] },
+const coursesBySemester = [
+  // Primer Año - Semestre I
+  [
+    { code: "QFAR1101", name: "Matemáticas I" },
+    { code: "QFAR1102", name: "Química I" },
+    { code: "QFAR1103", name: "Técnicas Básicas de Laboratorio" },
+    { code: "QFAR1104", name: "Biología Celular y Molecular", prereqs: [] },
+    { code: "QFAR1105", name: "Introducción a las Ciencias Farmacéuticas" },
+    { code: "CES1144", name: "Salud, Bienestar y Sociedad", prereqs: [] }
+  ],
+  // Primer Año - Semestre II
+  [
+    { code: "QFAR1106", name: "Matemáticas II", prereqs: ["QFAR1101"] },
+    { code: "QFAR1107", name: "Química II", prereqs: ["QFAR1102", "QFAR1103"] },
+    { code: "QFAR1109", name: "Fisiología y Patología I", prereqs: ["QFAR1104"] },
+    { code: "CES1145", name: "Salud Pública", prereqs: ["CES1144"] },
+    { code: "ELAC", name: "Electivo Antropológico Cristiano" },
+    { code: "QFAR1110", name: "Anatomía e Histología" }
+  ],
+  // Segundo Año - Semestre III
+  [
+    { code: "QFAR1111", name: "Química Orgánica I", prereqs: ["QFAR1107"] },
+    { code: "QFAR1112", name: "Botánica Farmacéutica" },
+    { code: "QFAR1108", name: "Biofísica" },
+    { code: "QFAR1113", name: "Fisiología y Patología II", prereqs: ["QFAR1109"] },
+    { code: "CES1146", name: "Salud Familiar Comunitaria e Intercultural I", prereqs: ["CES1145"] },
+    { code: "EL1", name: "Electivo Diversidad I" }
+  ],
+  // Segundo Año - Semestre IV
+  [
+    { code: "QFAR1115", name: "Química Orgánica II", prereqs: ["QFAR1111"] },
+    { code: "QFAR1116", name: "Química Analítica", prereqs: ["QFAR1107"] },
+    { code: "QFAR1117", name: "Bioquímica General", prereqs: ["QFAR1111"] },
+    { code: "CES1147", name: "Salud Familiar Comunitaria e Intercultural II", prereqs: ["CES1146"] },
+    { code: "QFAR1114", name: "Comunicación en Salud" },
+    { code: "QFAR1118", name: "Fisicoquímica", prereqs: ["QFAR1107", "QFAR1106"] }
+  ],
+  // Tercer Año - Semestre V
+  [
+    { code: "QFAR1119", name: "Farmacología General", prereqs: ["QFAR1115"] },
+    { code: "QFAR1120", name: "Microbiología", prereqs: ["QFAR1102"] },
+    { code: "QFAR1121", name: "Análisis Instrumental" },
+    { code: "QFAR1122", name: "Farmacognosia", prereqs: ["QFAR1112", "QFAR1115"] },
+    { code: "CES1158", name: "Práctica Comunitaria Interdisciplinaria", prereqs: ["CES1147"] },
+    { code: "EL2", name: "Electivo Diversidad II" }
+  ],
+  // Tercer Año - Semestre VI
+  [
+    { code: "QFAR1123", name: "Farmacología de Sistemas I", prereqs: ["QFAR1113", "QFAR1119"] },
+    { code: "QFAR1124", name: "Bioquímica Clínica", prereqs: ["QFAR1117"] },
+    { code: "QFAR1125", name: "Farmacoquímica I", prereqs: ["QFAR1119"] },
+    { code: "QFAR1126", name: "Inmunología", prereqs: ["QFAR1113", "QFAR1119"] },
+    { code: "QFAR1127", name: "Bioestadística", prereqs: ["QFAR1106"] },
+    { code: "QFAR1131", name: "Administración y Gestión Farmacéutica", prereqs: ["QFAR1114", "QFAR1119", "QFAR1121", "QFAR1122"] }
+  ],
+  // Cuarto Año - Semestre VII
+  [
+    { code: "QFAR1128", name: "Farmacología de Sistemas II", prereqs: ["QFAR1123"] },
+    { code: "QFAR1129", name: "Tecnología Farmacéutica I", prereqs: ["QFAR1116"] },
+    { code: "QFAR1130", name: "Farmacoquímica II", prereqs: ["QFAR1125"] },
+    { code: "QFAR1145", name: "Electivo de Especialidad I", prereqs: ["QFAR1131", "QFAR1125"] },
+    { code: "QFAR1132", name: "Práctica Preliminar", prereqs: ["QFAR1131", "QFAR1125", "QFAR1123", "QFAR1124"] },
+    { code: "ELTE", name: "Electivo Teológico" }
+  ],
+  // Cuarto Año - Semestre VIII
+  [
+    { code: "QFAR1133", name: "Toxicología", prereqs: ["QFAR1128", "QFAR1121"] },
+    { code: "QFAR1134", name: "Tecnología Farmacéutica II", prereqs: ["QFAR1129"] },
+    { code: "QFAR1135", name: "Atención Farmacéutica", prereqs: ["QFAR1124", "QFAR1128"] },
+    { code: "QFAR1140", name: "Cosmética Farmacéutica", prereqs: ["QFAR1134"] },
+    { code: "QFAR1136", name: "Farmacia Comunitaria y Asistencial", prereqs: ["QFAR1128", "QFAR1129"] },
+    { code: "QFAR1137", name: "Seminarios de Investigación", prereqs: ["QFAR1132"] },
+    { code: "QFAR1138", name: "Legislación Farmacéutica", prereqs: ["QFAR1132", "QFAR1128", "QFAR1129"] }
+  ],
+  // Quinto Año - Semestre IX
+  [
+    { code: "QFAR1146", name: "Electivo Interprofesional", prereqs: ["QFAR1136"] },
+    { code: "QFAR1139", name: "Biofarmacia", prereqs: ["QFAR1134"] },
+    { code: "QFAR1140", name: "Cosmética Farmacéutica", prereqs: ["QFAR1134"] },
+    { code: "QFAR1141", name: "Farmacia Clínica", prereqs: ["QFAR1130", "QFAR1135"] },
+    { code: "IET1433", name: "Ética Profesional" },
+    { code: "EL3", name: "Electivo Diversidad III" }
+  ],
+  // Quinto Año - Semestre X
+  [
+    { code: "QFAR1142", name: "Práctica Profesional", prereqs: ["QFAR1138", "QFAR1141", "QFAR1135", "QFAR1139", "QFAR1136", "QFAR1133"] },
+    { code: "QFAR1143", name: "Actividad de Titulación", prereqs: ["QFAR1137"] },
+    { code: "QFAR1144", name: "Electivo de Especialidad II", prereqs: ["QFAR1145"] }
+  ]
 ];
 
-const romanos = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"];
+export default function App() {
+  const [approved, setApproved] = useState([]);
 
-const App = () => {
-  const [cursosAprobados, setCursosAprobados] = useState<string[]>(() => {
-    const guardado = localStorage.getItem("cursosAprobados");
-    return guardado ? JSON.parse(guardado) : [];
-  });
-
+  // Load saved approvals from localStorage
   useEffect(() => {
-    localStorage.setItem("cursosAprobados", JSON.stringify(cursosAprobados));
-  }, [cursosAprobados]);
+    const saved = localStorage.getItem('approvedCourses');
+    if (saved) setApproved(JSON.parse(saved));
+  }, []);
 
-  const estaDesbloqueado = (curso: Curso): boolean =>
-    curso.requisitos.every((req) => cursosAprobados.includes(req));
+  // Save approvals to localStorage
+  useEffect(() => {
+    localStorage.setItem('approvedCourses', JSON.stringify(approved));
+  }, [approved]);
 
-  const toggleCurso = (id: string) => {
-    setCursosAprobados((prev) =>
-      prev.includes(id) ? prev.filter((c) => c !== id) : [...prev, id]
+  const toggleCourse = (code) => {
+    setApproved((prev) =>
+      prev.includes(code) ? prev.filter((c) => c !== code) : [...prev, code]
     );
   };
 
-  const cursosPorSemestre: { [sem: number]: Curso[] } = {};
-  for (const curso of cursos) {
-    if (!cursosPorSemestre[curso.semestre]) {
-      cursosPorSemestre[curso.semestre] = [];
-    }
-    cursosPorSemestre[curso.semestre].push(curso);
-  }
-
-  const porcentaje = (cursosAprobados.length / cursos.length) * 100;
-  const creditosTotales = cursosAprobados
-    .map((id) => cursos.find((c) => c.id === id)?.creditos || 0)
-    .reduce((acc, cur) => acc + cur, 0);
-
-  const [modoOscuro, setModoOscuro] = useState(() => {
-    const guardado = localStorage.getItem("modoOscuro");
-    return guardado ? JSON.parse(guardado) : false;
-  });
-
-  useEffect(() => {
-    localStorage.setItem("modoOscuro", JSON.stringify(modoOscuro));
-  }, [modoOscuro]);
+  const isAvailable = (course) => {
+    if (!course.prereqs || course.prereqs.length === 0) return true;
+    return course.prereqs.every((p) => approved.includes(p));
+  };
 
   return (
-    <div>
-      className={`relative min-h-screen p-6 overflow-x-hidden overflow-y-auto transition-colors duration-500 ${
-        modoOscuro ? "bg-[#e7e0f6] text-[#3c2a52]" : "bg-pink-50 text-pink-800"
-      }`}
-    >
+    <div className="p-4 bg-gray-50 min-h-screen">
+      <h1 className="text-3xl font-bold mb-6 text-center">Malla Curricular Química y Farmacia</h1>
+      
+      <div className="mb-4 p-4 bg-blue-100 rounded-lg">
+        <h2 className="text-xl font-semibold mb-2">Progreso</h2>
+        <div className="w-full bg-gray-200 rounded-full h-4">
+          <div 
+            className="bg-green-500 h-4 rounded-full" 
+            style={{ width: `${(approved.length / coursesBySemester.flat().length) * 100}%` }}
+          ></div>
+        </div>
+        <p className="mt-2 text-sm">
+          {approved.length} de {coursesBySemester.flat().length} ramos aprobados (
+          {Math.round((approved.length / coursesBySemester.flat().length) * 100)}%)
+        </p>
+        <button 
+          onClick={() => setApproved([])}
+          className="mt-2 px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 text-sm"
+        >
+          Reiniciar progreso
+        </button>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        {coursesBySemester.map((semester, i) => (
+          <div key={i} className="bg-white shadow rounded-lg p-4">
+            <h2 className="text-lg font-semibold text-center mb-3 border-b pb-2">
+              {i < 2 ? "Primer Año" : 
+               i < 4 ? "Segundo Año" : 
+               i < 6 ? "Tercer Año" : 
+               i < 8 ? "Cuarto Año" : "Quinto Año"} - Semestre {i % 2 === 0 ? "I" : "II"}
+            </h2>
+            {semester.map((course) => {
+              const available = isAvailable(course);
+              const isApproved = approved.includes(course.code);
+              const approvedClass = isApproved 
+                ? "bg-green-200 hover:bg-green-300" 
+                : available 
+                  ? "bg-yellow-100 hover:bg-yellow-200" 
+                  : "bg-gray-200 opacity-50 cursor-not-allowed";
+              
+              return (
+                <div
+                  key={course.code}
+                  className={`p-3 mb-2 rounded transition-colors ${approvedClass} ${available ? 'cursor-pointer' : ''}`}
+                  onClick={() => available && toggleCourse(course.code)}
+                  title={!available && course.prereqs 
+                    ? `Prerrequisitos: ${course.prereqs.join(', ')}` 
+                    : ''}
+                >
+                  <span className="block font-medium text-gray-800">{course.code}</span>
+                  <span className="text-sm text-gray-600">{course.name}</span>
+                  {isApproved && (
+                    <span className="block text-xs text-green-700 mt-1">✔ Aprobado</span>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
